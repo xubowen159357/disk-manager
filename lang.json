@@ -1,0 +1,41 @@
+{
+    "en":{
+        "about":"Disk Manager\nAuthor:%(author)s\nVersion: %(version)s\nSrc: %(srcurl)s",
+        "reboot":"Are you sure you want to reboot?",
+        "exit":"Are you sure you want to exit?",
+        "reload":"reloaded",
+        "title":{
+            "edit":"Edit",
+            "exit":"Exit",
+            "about":"About",
+            "reboot":"Reboot",
+            "reload":"Reload",
+            "new-disk":"New Disk",
+            "new-partition":"New Partition",
+            "disk-info":"Infomation of the disk [%(diskname)s]"
+        },
+        "label":{
+            "disk-info":"Disk name: %(diskname)s\nFstype: %(fstype)s\nOpts: %(opts)s\nSize: %(size)s\nUsed: %(used)s\nFree: %(free)s\nMountpoint: %(mountpoint)s\nEnable WMI: %(wmi-enabled)s"
+        }
+    },
+    "zh":{
+        "about":"磁盘管理器\n开发员:%(author)s\n版本：%(version)s\n源码：%(srcurl)s",
+        "reboot":"确定要重启吗？",
+        "exit":"确认退出?",
+        "reload":"已重载",
+        "title":{
+            "edit":"编辑",
+            "exit":"退出",
+            "about":"关于",
+            "reboot":"重启",
+            "reload":"重载",
+            "new-disk":"新建磁盘",
+            "new-partition":"新建分区",
+            "disk-info":"磁盘信息 [%(diskname)s]"
+        },
+        "label":{
+            "disk-chose":"选择磁盘",
+            "disk-info":"磁盘名称: %(diskname)s\n文件系统: %(fstype)s\n选项: %(opts)s\n大小: %(size)s\n已用: %(used)s\n剩余: %(free)s\n挂载点: %(mountpoint)s\n启用WMI: %(wmi-enabled)s"
+        }
+    }
+}

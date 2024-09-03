@@ -13,8 +13,9 @@ from pystray import MenuItem, Icon, Menu
 
 ICONP = 'icon.ico'
 SETTINGP = 'setting.json'
+LANGP = 'lang.json'
 
-Recurse = [ICONP, SETTINGP]
+Recurse = [ICONP, SETTINGP, LANGP]
 
 
 class disk_ifs:
@@ -28,7 +29,7 @@ class disk_ifs:
             self.init()
 
     def init(self):
-        if self.fstype=='':
+        if self.fstype == '':
             self.info += '未挂载;'
             self.fstype = 'null'
         if len(self.opts) == 1:
@@ -43,7 +44,7 @@ class disk_ifs:
             self.info += '可移动盘;'
         elif 'cdrom' in self.opts:
             self.info += '光驱;'
-        if self.fstype!='null':
+        if self.fstype != 'null':
             self.volume_info = win32api.GetVolumeInformation(self.device)[0]
 
     def save(self):
@@ -66,26 +67,32 @@ class disk_ifs:
 
 
 for i in Recurse:
-    if not os.path.exists(i) and i != ICONP:
+    if not os.path.exists(i) and (i != ICONP or i != SETTINGP):
         with open(i, 'w') as file:
-            file.write(js.dumps({diskpath.device.strip(): disk_ifs(diskpath.device, diskpath.mountpoint, diskpath.fstype, diskpath.opts).save()
-                                 for diskpath in psutil.disk_partitions()}))
+            file.write('{\n}')
     elif not os.path.exists(i):
         mess.showinfo('Error', 'RecursionError')
         sys.exit()
 
 ICON = Image.open(ICONP)
-SETTING = js.loads(open(SETTINGP, 'r').read())
-TNEW = None
-NEW, DEL = False, False
-RE=True
+RE = True
+
 
 
 def reload():
-    global NEW, DEL, TNEW, SETTING
-    SETTING = js.loads(open(SETTING, 'r').read())
-    NEW, DEL = False, False
+    global NEW, DEL, TNEW, SETTING, LANGA, LANG, TIMESTEEP
+    SETTING = js.loads(open(SETTINGP, 'r').read())
+    LANGA = js.loads(open(LANGP, 'r', encoding='utf-8').read())
     TNEW = None
+    NEW, DEL = False, False
+    LANG = LANGA['zh']
+    TIMESTEEP = SETTING.get('time')
+    if TIMESTEEP is None:
+        TIMESTEEP = 0.1
+    if '-lang=en' in sys.argv:
+        LANG = LANGA['en']
+    if not RE:
+        mess.showinfo(LANG['title']['reload'], LANG['reload'])
 
 
 class Background:
@@ -118,7 +125,7 @@ class Background:
                     self.nowdisk = {disk.device: disk for disk in self.Elocaldisk}
                     DEL = True
                 self.Disks = ldisk
-            time.sleep(SETTING['time'])  # Add a small sleep to prevent excessive CPU usage
+            time.sleep(TIMESTEEP)  # Add a small sleep to prevent excessive CPU usage
 
     def stop(self):
         self.RUN = False
@@ -137,26 +144,26 @@ class UI:
         self.ui.run()
 
     def exit(self):
-        if mess.askokcancel('Exit', '确认退出?'):
+        if mess.askokcancel(LANG['title']['exit'], LANG['exit']):
             self.ui.stop()
             bk.stop()
 
     def reboot(self):
         global RE
-        if mess.askokcancel('Reboot', '确认重启?'):
+        if mess.askokcancel(LANG['title']['reboot'], LANG['reboot']):
             self.ui.stop()
             bk.stop()
-        RE=True
+        RE = True
 
     def newdisk(self, disk: list[disk_ifs]):
         for new in disk:
             if os.path.exists(new.device):
                 if mess.askokcancel('New Disk', f'新磁盘 {new.volume_info} {new.device} 你想打开他吗？'):
                     new.open()
-    
+
     def info(self):
-        from data import version__
-        mess.showinfo('Info', f'Disk Manager\nAuthor:Xu.bw\nVersion:{version__}')
+        from data import version_, author_, scrurl_
+        mess.showinfo(LANG['title']['about'], LANG['about'] % {'version': version_, 'author': author_, 'srcurl': scrurl_})
 
     def um(self):
         m = []
@@ -165,10 +172,10 @@ class UI:
             if SETTING.get('showinfo'):
                 info += f'\tinfo:{bk.nowdisk[disk].info}'
             m.append(MenuItem(disk+f'    {bk.nowdisk[disk].volume_info}'+info, bk.nowdisk[disk].open))
-        m.append(MenuItem('About', self.info))
-        m.append(MenuItem('重载', reload))
-        m.append(MenuItem('重启', self.reboot))
-        m.append(MenuItem('退出', self.exit))
+        m.append(MenuItem(LANG['title']['about'], self.info))
+        m.append(MenuItem(LANG['title']['reload'], reload))
+        m.append(MenuItem(LANG['title']['reboot'], self.reboot))
+        m.append(MenuItem(LANG['title']['exit'], self.exit))
         self.ui.menu = Menu(*m)
         self.ui.update_menu()
 
@@ -182,11 +189,12 @@ class UI:
                     Thread(target=self.newdisk, args=(TNEW,)).start()
                 NEW = False
                 DEL = False
-            time.sleep(SETTING['time'])  # Add a small sleep to prevent excessive CPU usage
+            time.sleep(TIMESTEEP)  # Add a small sleep to prevent excessive CPU usage
 
 
 while RE:
-    RE=False
+    reload()
+    RE = False
     bk = Background()
     bk.run()
     ui = UI(ICON)
