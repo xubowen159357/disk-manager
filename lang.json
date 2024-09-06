@@ -12,10 +12,34 @@
             "reload":"Reload",
             "new-disk":"New Disk",
             "new-partition":"New Partition",
-            "disk-info":"Infomation of the disk [%(diskname)s]"
+            "disk-info":"Infomation of the disk [%(diskname)s, %(mountpoint)s]",
+            "disk_info":"Infomation of the disk",
+            "profile-edit":"edit profile",
+            "more-config":"More Config"
         },
         "label":{
-            "disk-info":"Disk name: %(diskname)s\nFstype: %(fstype)s\nOpts: %(opts)s\nSize: %(size)s\nUsed: %(used)s\nFree: %(free)s\nMountpoint: %(mountpoint)s\nEnable WMI: %(wmi-enabled)s"
+            "profile-edit":{
+                "time":"Update speed time：",
+                "lang":"language：",
+                "wmi":"Enable WMI：",
+                "showinfo":"show info：",
+                "new-disk-open":"new disk open prompt：",
+                "save":"save"
+            },
+            "disk_info":{
+                "disk-info":"Disk name: %(diskname)s\nFstype: %(fstype)s\nOpts: %(opts)s\nMountpoint: %(mountpoint)s\nInfo: %(info)s\nEnable WMI: %(wmi-enabled)s",
+                "use":"Disk use:\nUsed:%(used)s\nFree:%(free)s\nAll:%(total)s",
+                "use-cannt-get":"Can't get disk use info: not mounted",
+                "wmi-info":"WMI info: %(wmi-info)s"
+            }
+        },
+        "info":{
+            "new-disk":"New disk %(diskname)s %(mountpoint)s do you want to open it?"
+        },
+        "error":{
+            "profile-edit":{
+                "lang":"language not support,\nplase use en or zh"
+            }
         }
     },
     "zh":{
@@ -23,6 +47,7 @@
         "reboot":"确定要重启吗？",
         "exit":"确认退出?",
         "reload":"已重载",
+        "profile-edit":"",
         "title":{
             "edit":"编辑",
             "exit":"退出",
@@ -31,11 +56,33 @@
             "reload":"重载",
             "new-disk":"新建磁盘",
             "new-partition":"新建分区",
-            "disk-info":"磁盘信息 [%(diskname)s]"
+            "disk-info":"磁盘信息 [%(diskname)s, %(mountpoint)s]",
+            "disk_info":"磁盘信息",
+            "profile-edit":"编辑配置文件",
+            "more-config":"更多配置"
         },
         "label":{
-            "disk-chose":"选择磁盘",
-            "disk-info":"磁盘名称: %(diskname)s\n文件系统: %(fstype)s\n选项: %(opts)s\n大小: %(size)s\n已用: %(used)s\n剩余: %(free)s\n挂载点: %(mountpoint)s\n启用WMI: %(wmi-enabled)s"
+            "profile-edit":{
+                "time":"刷新间隔：",
+                "lang":"语言：",
+                "wmi":"启用WMI：",
+                "showinfo":"显示信息：",
+                "new-disk-open":"新磁盘打开提示：",
+                "save":"保存"
+            },
+            "disk_info":{
+                "disk-info":"磁盘名称: %(diskname)s\n文件系统: %(fstype)s\n选项: %(opts)s\n挂载点: %(mountpoint)s\n信息: %(info)s\n启用WMI: %(wmi-enabled)s",
+                "use":"磁盘使用情况:\n已使用:%(used)s\n剩余:%(free)s\n总大小:%(total)s\t",
+                "use-cannt-get":"无法获取磁盘使用情况：未挂载"
+            }
+        },
+        "info":{
+            "new-disk":"新磁盘 %(diskname)s %(mountpoint)s 你想打开他吗？"
+        },
+        "error":{
+            "profile-edit":{
+                "lang":"语言不支持，\n请使用en或zh"
+            }
         }
     }
 }
